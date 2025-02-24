@@ -1,0 +1,10 @@
+alembic
+autoflake
+black
+setuptools
+flake8
+httpx
+isort
+pytest
+pytest-cov
+requests

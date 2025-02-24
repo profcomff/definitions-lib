@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "definitions_lib_profcomff"
+authors = [
+    {name = "profcomff.com", email = "admin@profcomff.com"},
+]
+description = ""
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = ["SQLAlchemy", "psycopg2-binary", "alembic"]
+dynamic = ["version"]
+
+[tool.setuptools]
+packages = ["definitions_lib_profcomff"]
+
