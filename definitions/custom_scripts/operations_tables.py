@@ -36,16 +36,18 @@ class RevokeRightsOp(MigrateOperation):
 @Operations.implementation_for(GrantRightsOp)
 def grant_on_table(operations, operation):
     group = operation.group_name.lower()
-    table = operation.table_name.split('.')
+    table = operation.table_name.split(".")
     scopes = operation.scopes
     for scope in scopes:
-        operations.execute(f'GRANT {scope} ON TABLE {table[0]}.{table[1]} TO {group}')
+        operations.execute(f"GRANT {scope} ON TABLE {table[0]}.{table[1]} TO {group}")
 
 
 @Operations.implementation_for(RevokeRightsOp)
 def revoke_on_table(operations, operation):
     group = operation.group_name.lower()
-    table = operation.table_name.split('.')
+    table = operation.table_name.split(".")
     scopes = operation.scopes
     for scope in scopes:
-        operations.execute(f'REVOKE {scope} ON TABLE {table[0]}.{table[1]} FROM {group}')
+        operations.execute(
+            f"REVOKE {scope} ON TABLE {table[0]}.{table[1]} FROM {group}"
+        )

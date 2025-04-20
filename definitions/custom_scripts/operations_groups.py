@@ -62,13 +62,13 @@ class RevokeOnSchemaOp(MigrateOperation):
 @Operations.implementation_for(CreateGroupOp)
 def create_group(operations, operation):
     name = operation.group_name.lower()
-    operations.execute(f'CREATE GROUP {name}')
+    operations.execute(f"CREATE GROUP {name}")
 
 
 @Operations.implementation_for(DeleteGroupOp)
 def delete_group(operations, operation):
     name = operation.group_name.lower()
-    operations.execute(f'DROP GROUP {name}')
+    operations.execute(f"DROP GROUP {name}")
 
 
 @Operations.implementation_for(GrantOnSchemaOp)
