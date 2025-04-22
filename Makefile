@@ -3,3 +3,7 @@ configure: venv
 
 venv:
 	python3.11 -m venv venv
+
+format:
+	isort ./
+	black ./

@@ -1,9 +1,10 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "definitions_lib_profcomff"
+name = "definitions_lib"
+version = "0.0.0"
 authors = [
     {name = "profcomff.com", email = "admin@profcomff.com"},
 ]
@@ -17,8 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
 ]
 dependencies = ["SQLAlchemy", "psycopg2-binary", "alembic"]
-dynamic = ["version"]
 
 [tool.setuptools]
-packages = ["definitions_lib_profcomff"]
+packages = ["definitions"]
 

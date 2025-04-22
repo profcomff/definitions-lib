@@ -1,15 +1,16 @@
 import os
-from typing import Optional, Sequence, Any
+from typing import Any, Optional, Sequence
+
 from alembic.config import CommandLine, Config
 
 
 def get_template_directory(self):
     """Return the directory where Alembic setup templates are found.
 
-        This method is used by the alembic ``init`` and ``list_templates``
-        commands.
+    This method is used by the alembic ``init`` and ``list_templates``
+    commands.
 
-        """
+    """
     import definitions
 
     package_dir = os.path.abspath(os.path.dirname(definitions.__file__))
