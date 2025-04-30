@@ -17,7 +17,6 @@ def get_template_directory(self):
     return os.path.join(package_dir, "templates")
 
 
-Config.get_template_directory = get_template_directory
 
 def main(
     argv: Optional[Sequence[str]] = None,
@@ -32,6 +31,7 @@ def main(
         # see http://bugs.python.org/issue9253, argparse
         # behavior changed incompatibly in py3.3
         command_line.parser.error("too few arguments")
+    Config.get_template_directory = get_template_directory
     config = Config(
         file_=options.config,
         ini_section=options.name,
