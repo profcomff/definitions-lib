@@ -62,6 +62,7 @@ jobs:
       - uses: isort/isort-action@master
         with:
           requirementsFiles: "requirements.txt requirements.dev.txt"
+          args: ["--profile", "black", "--filter-files"]
       - uses: psf/black@stable
       - name: Comment if linting failed
         if: ${{ failure() }}
