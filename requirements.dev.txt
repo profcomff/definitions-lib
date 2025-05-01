@@ -14,3 +14,4 @@ psycopg2-binary
 mypy
 lxml
 setuptools
+types-setuptools

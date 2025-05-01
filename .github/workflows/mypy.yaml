@@ -11,6 +11,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.11
+      #TODO@mixx3 consider rewriting this to official mypy action
       - name: Install dependencies
         run: |
           python -m ensurepip
