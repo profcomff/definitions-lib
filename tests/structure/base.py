@@ -1,6 +1,5 @@
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -9,11 +8,11 @@ from typing import Any
 
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import as_declarative
-from tests.structure.STG import *
+
 from definitions.custom_scripts.schemas import add_table_schema_to_model
+from tests.structure.STG import *
 
-
-__version__ = '1.0.0'  # Не менять, работает автоматика
+__version__ = "1.0.0"  # Не менять, работает автоматика
 
 
 @as_declarative()
@@ -34,7 +33,7 @@ class Base:
         schema = f'{cls.__module__.split(".")[-2].upper()}_{cls.__module__.split(".")[-1].upper()}'
         add_table_schema_to_model(schema, Base.metadata)  # type: ignore
 
-        return {'schema': schema, 'comment': cls.__doc__, 'info': {'sensitive': False}}
+        return {"schema": schema, "comment": cls.__doc__, "info": {"sensitive": False}}
 
     def __repr__(self) -> str:
         attrs = []
@@ -52,7 +51,7 @@ class SensitiveBase(Base):
         schema = f'{cls.__module__.split(".")[-2].upper()}_{cls.__module__.split(".")[-1].upper()}'
         add_table_schema_to_model(schema, Base.metadata)  # type: ignore
 
-        return {'schema': schema, 'comment': cls.__doc__, 'info': {'sensitive': True}}
+        return {"schema": schema, "comment": cls.__doc__, "info": {"sensitive": True}}
 
     __abstract__ = True
-    __mapper_args__ = {'concrete': True}
+    __mapper_args__ = {"concrete": True}

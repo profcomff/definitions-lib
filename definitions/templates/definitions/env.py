@@ -1,10 +1,11 @@
 import os
 from logging.config import fileConfig
 
-import definitions  # noqa
 from alembic import context
-from tests.structure.base import Base  # consider changing this to your Base class
 from sqlalchemy import engine_from_config, pool
+
+import definitions  # noqa
+from tests.structure.base import Base  # consider changing this to your Base class
 
 config = context.config
 

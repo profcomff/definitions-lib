@@ -1,9 +1,10 @@
 import os
-import pytest
-from definitions.config import Config
 from pathlib import Path
+
+import pytest
 from alembic.script import Script, ScriptDirectory
 
+from definitions.config import Config
 
 REPO_ROOT = Path(os.path.abspath(os.path.dirname(__file__))).parent.resolve()
 
@@ -11,9 +12,10 @@ REPO_ROOT = Path(os.path.abspath(os.path.dirname(__file__))).parent.resolve()
 @pytest.fixture
 def alembic_config():
     alembic_cfg = Config()
-    alembic_cfg.set_main_option('script_location', str(REPO_ROOT / "test_migrations"))
+    alembic_cfg.set_main_option("script_location", str(REPO_ROOT / "test_migrations"))
     alembic_cfg.set_main_option(
-        'sqlalchemy.url', os.getenv("DB_DSN") or "postgresql://postgres:postgres@localhost:5432/postgres"
+        "sqlalchemy.url",
+        os.getenv("DB_DSN") or "postgresql://postgres:postgres@localhost:5432/postgres",
     )  # db for migration tests
     return alembic_cfg
 

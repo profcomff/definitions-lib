@@ -17,7 +17,6 @@ def get_template_directory(self):
     return os.path.join(package_dir, "templates")
 
 
-
 def main(
     argv: Optional[Sequence[str]] = None,
     prog: Optional[str] = None,
