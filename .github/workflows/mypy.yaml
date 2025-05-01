@@ -17,5 +17,4 @@ jobs:
           path: '.'
           version: 'latest'
           mypy_flags: '--verbose'
-          mypy_config_file: 'mypy.ini'
           requirement_files: 'requirements.dev.txt'
