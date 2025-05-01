@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Mypy
     steps:
-      # To use this repository's private action,
-      # you must check out the repository
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
       - name: Run Mypy
         uses: jashparekh/mypy-action@v2
         with:
