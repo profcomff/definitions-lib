@@ -1,0 +1,26 @@
+name: "Mypy"
+on:
+  pull_request:
+
+jobs:
+  run_mypy:
+    runs-on: ubuntu-latest
+    name: Mypy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      #TODO@mixx3 consider rewriting this to official mypy action
+      - name: Install dependencies
+        run: |
+          python -m ensurepip
+          python -m pip install --upgrade --no-cache-dir pip
+          python -m pip install --upgrade --no-cache-dir -r requirements.txt -r requirements.dev.txt
+      - name: Build mypy report
+        run: |
+          python -m mypy . --config-file pyproject.toml --txt-report mypy_report
+      - name: Print mypy report
+        if: always()
+        run: |
+          cat mypy_report/index.txt

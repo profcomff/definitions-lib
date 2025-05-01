@@ -30,7 +30,7 @@ def main(
         # see http://bugs.python.org/issue9253, argparse
         # behavior changed incompatibly in py3.3
         command_line.parser.error("too few arguments")
-    Config.get_template_directory = get_template_directory
+    Config.get_template_directory = get_template_directory  # type: ignore
     config = Config(
         file_=options.config,
         ini_section=options.name,

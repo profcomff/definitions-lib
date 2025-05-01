@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="definitions_lib",
-    version="0.0.0",  # ← Устанавливаешь версию вручную здесь
+    version="0.0.1",
     author="profcomff.com",
     author_email="admin@profcomff.com",
     description="",

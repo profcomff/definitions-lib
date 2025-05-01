@@ -8,3 +8,7 @@ isort
 pytest
 pytest-cov
 requests
+mypy
+lxml
+setuptools
+types-setuptools

@@ -22,3 +22,5 @@ dependencies = ["SQLAlchemy", "psycopg2-binary", "alembic"]
 [tool.setuptools]
 packages = ["definitions"]
 
+[tool.isort]
+profile = "black"
