@@ -11,10 +11,15 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.11
-      - name: Run Mypy
-        uses: jashparekh/mypy-action@v2
-        with:
-          path: '.'
-          version: 'latest'
-          mypy_flags: '--verbose'
-          requirement_files: 'requirements.dev.txt'
+      - name: Install dependencies
+        run: |
+          python -m ensurepip
+          python -m pip install --upgrade --no-cache-dir pip
+          python -m pip install --upgrade --no-cache-dir -r requirements.txt -r requirements.dev.txt
+      - name: Build mypy report
+        run: |
+          python -m mypy .  --config-file pyproject.toml --txt-report mypy_report.txt
+      - name: Print mypy report
+        if: always()
+        run: |
+          cat mypy_report/index.txt

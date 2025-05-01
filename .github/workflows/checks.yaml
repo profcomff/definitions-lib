@@ -32,6 +32,13 @@ jobs:
         if: always()
         run: |
           cat pytest-coverage.txt
+      - name: Build mypy report
+        run: |
+          python -m mypy .  --config-file pyproject.toml --txt-report mypy_report.txt
+      - name: Print mypy report
+        if: always()
+        run: |
+          cat mypy_report/index.txt
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:

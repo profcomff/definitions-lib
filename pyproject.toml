@@ -24,11 +24,3 @@ packages = ["definitions"]
 
 [tool.isort]
 profile = "black"
-
-[tool.mypy]
-warn_return_any = False
-warn_unused_configs = True
-warn_unused_ignores = True
-ignore_errors = True
-follow_imports = skip
-ignore_missing_imports = True

@@ -20,7 +20,7 @@ class Base:
     """Base class for all database entities"""
 
     @classmethod
-    @declared_attr
+    @declared_attr  # type: ignore
     def __tablename__(cls) -> str:
         """Generate database table name automatically.
         Convert CamelCase class name to snake_case db table name.
@@ -28,7 +28,7 @@ class Base:
         return re.sub(r"(?<!^)(?=[A-Z])", "_", cls.__name__).lower()
 
     @classmethod
-    @declared_attr
+    @declared_attr  # type: ignore
     def __table_args__(cls) -> dict[str, Any]:
         schema = f'{cls.__module__.split(".")[-2].upper()}_{cls.__module__.split(".")[-1].upper()}'
         add_table_schema_to_model(schema, Base.metadata)  # type: ignore
@@ -46,7 +46,7 @@ class SensitiveBase(Base):
     """Base class for all sensitive entities"""
 
     @classmethod
-    @declared_attr
+    @declared_attr  # type: ignore
     def __table_args__(cls) -> dict[str, Any]:
         schema = f'{cls.__module__.split(".")[-2].upper()}_{cls.__module__.split(".")[-1].upper()}'
         add_table_schema_to_model(schema, Base.metadata)  # type: ignore
