@@ -16,6 +16,7 @@ setup(
         "Programming Language :: Python :: 3.11",
     ],
     packages=find_packages(include=["definitions"]),
+    include_package_data=True,
     install_requires=[
         "SQLAlchemy",
         "psycopg2-binary",

@@ -1,0 +1,2 @@
+recursive-include definitions/templates *.mako README *.py *.pyi
+recursive-include definitions *.py *.pyi py.typed
