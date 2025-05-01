@@ -25,9 +25,6 @@ jobs:
           python -m ensurepip
           python -m pip install --upgrade --no-cache-dir pip
           python -m pip install --upgrade --no-cache-dir -r requirements.txt -r requirements.dev.txt
-      - name: Migrate DB
-        run: |
-          DB_DSN=postgresql://postgres@localhost:5432/postgres alembic upgrade head
       - name: Build coverage file
         run: |
           DB_DSN=postgresql://postgres@localhost:5432/postgres pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=rating_api tests/ | tee pytest-coverage.txt
@@ -59,9 +56,12 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.11
-      - uses: isort/isort-action@master
-        with:
-          requirementsFiles: "requirements.txt requirements.dev.txt"
+      - name: Linting
+        run: |
+          python -m ensurepip
+          python -m pip install --upgrade --no-cache-dir pip
+          python -m pip install --upgrade --no-cache-dir -r requirements.txt -r requirements.dev.txt
+          python -m isort . --profile black
       - uses: psf/black@stable
       - name: Comment if linting failed
         if: ${{ failure() }}
