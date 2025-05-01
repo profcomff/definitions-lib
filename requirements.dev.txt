@@ -8,9 +8,6 @@ isort
 pytest
 pytest-cov
 requests
-SQLAlchemy
-alembic
-psycopg2-binary
 mypy
 lxml
 setuptools
