@@ -1,12 +1,7 @@
-import definitions
 import logging
- 
-from sqlalchemy import Integer
-from sqlalchemy.orm import Mapped, mapped_column
 
 
 logger = logging.getLogger(__name__)
-
 
 
 import re
@@ -14,10 +9,8 @@ from typing import Any
 
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import as_declarative
-from test_structure.STG import *
+from tests.structure.STG import *
 from definitions.custom_scripts.schemas import add_table_schema_to_model
-import os
-import sys
 
 
 __version__ = '1.0.0'  # Не менять, работает автоматика
@@ -39,13 +32,13 @@ class Base:
     @declared_attr
     def __table_args__(cls) -> dict[str, Any]:
         schema = f'{cls.__module__.split(".")[-2].upper()}_{cls.__module__.split(".")[-1].upper()}'
-        add_table_schema_to_model(schema, Base.metadata)
+        add_table_schema_to_model(schema, Base.metadata)  # type: ignore
 
         return {'schema': schema, 'comment': cls.__doc__, 'info': {'sensitive': False}}
 
     def __repr__(self) -> str:
         attrs = []
-        for c in self.__table__.columns:
+        for c in self.__table__.columns:  # type: ignore
             attrs.append(f"{c.name}={getattr(self, c.name)}")
         return "{}({})".format(self.__class__.__name__, ", ".join(attrs))
 
@@ -57,7 +50,7 @@ class SensitiveBase(Base):
     @declared_attr
     def __table_args__(cls) -> dict[str, Any]:
         schema = f'{cls.__module__.split(".")[-2].upper()}_{cls.__module__.split(".")[-1].upper()}'
-        add_table_schema_to_model(schema, Base.metadata)
+        add_table_schema_to_model(schema, Base.metadata)  # type: ignore
 
         return {'schema': schema, 'comment': cls.__doc__, 'info': {'sensitive': True}}
 
