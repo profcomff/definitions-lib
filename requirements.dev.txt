@@ -11,3 +11,4 @@ requests
 SQLAlchemy
 alembic
 psycopg2-binary
+mypy
