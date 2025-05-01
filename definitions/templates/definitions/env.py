@@ -5,7 +5,7 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 import definitions  # noqa
-from tests.structure.base import Base  # consider changing this to your Base class
+from tests.structure.base import Base  # consider changing this to your Base
 
 config = context.config
 
