@@ -32,7 +32,7 @@ def compare_schemas(autogen_context, upgrade_ops, schemas):
             if sch[0] not in default_pg_schemas
         ]
     )
-    
+
     metadata_schemas = autogen_context.metadata.info.setdefault("table_schemas", set())
     for table in autogen_context.metadata.tables.values():
         if table.schema and table.schema not in default_pg_schemas:
