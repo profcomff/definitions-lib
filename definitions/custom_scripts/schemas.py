@@ -19,6 +19,9 @@ def add_table_schema_to_model(table_schema, metadata):
 
 @comparators.dispatch_for("schema")
 def compare_schemas(autogen_context, upgrade_ops, schemas):
+    project_prefix = os.getenv("SCHEMA_PREFIX", "dwh")
+    environment = os.getenv("ENVIRONMENT", "dev")
+
     all_conn_schemas = set()
     default_pg_schemas = ["pg_toast", "information_schema", "public", "pg_catalog"]
     query = text("select schema_name from information_schema.schemata")
@@ -29,16 +32,19 @@ def compare_schemas(autogen_context, upgrade_ops, schemas):
             if sch[0] not in default_pg_schemas
         ]
     )
-
+    
     metadata_schemas = autogen_context.metadata.info.setdefault("table_schemas", set())
+    for table in autogen_context.metadata.tables.values():
+        if table.schema and table.schema not in default_pg_schemas:
+            metadata_schemas.add(table.schema)
 
     for sch in metadata_schemas - all_conn_schemas:
         upgrade_ops.ops.append(CreateTableSchemaOp(sch))
         for render_scope in ["read", "write", "all"]:
             group_name = (
-                f"test_dwh_{sch}_{render_scope}".lower()
-                if os.getenv("ENVIRONMENT") != "production"
-                else f"prod_dwh_{sch}_{render_scope}".lower()
+                f"{env_prefix}_{project_prefix}_{sch}_{render_scope}".lower()
+                if project_prefix
+                else f"{env_prefix}_{sch}_{render_scope}".lower()
             )
             upgrade_ops.ops.append(CreateGroupOp(group_name))
             upgrade_ops.ops.append(GrantOnSchemaOp(group_name, sch))
