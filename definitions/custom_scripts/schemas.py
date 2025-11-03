@@ -62,14 +62,13 @@ def compare_for_groups(autogen_context, upgrade_ops, schemas):
             table.schema == sch and table.info.get("sensitive", False)
             for table in autogen_context.metadata.tables.values()
         )
+
+        group_name = f"{environment}%s_{project_prefix}_{sch}_%s".lower()
         for render_scope in ["read", "write", "all"]:
-            group_name = (
-                f"{environment}%s_{project_prefix}_{sch}_{render_scope}".lower()
-            )
             if has_regular:
-                all_groups_code.add((group_name % "", sch))
+                all_groups_code.add((group_name % ("", render_scope), sch))
             if has_sensitive:
-                all_groups_code.add((group_name % "_sensitive", sch))
+                all_groups_code.add((group_name % ("_sensitive", render_scope), sch))
 
     # for all new required groups
     for group, sch in all_groups_code - all_groups_db:

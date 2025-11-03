@@ -1,12 +1,16 @@
 import os
 
 from alembic.autogenerate import comparators
+from sqlalchemy import text
 
 from .operations_encrypt import DecryptTableOp, EncryptTableOp
 from .operations_tables import GrantRightsOp, RevokeRightsOp
 
 
-def compare_for_encrypted(table_db, table_code):
+# @comparators.dispatch_for("table")
+def compare_for_encrypted(
+    autogen_context, modify_table_ops, sch, tname, table_db, table_code
+):
     db_info = dict() if table_db is None else table_db.info
     code_info = dict() if table_code is None else table_code.info
     encrypted_db = db_info.get("encrypted", False)
@@ -39,6 +43,12 @@ def compare_for_encrypted(table_db, table_code):
         )
 
 
+# TODO: check for all existing rights, don't assume that they come from render_scope_map
+# query = text("SELECT grantee, privilege_type FROM information_schema.role_table_grants "
+#              "WHERE table_schema=:schema AND table_name=:tablename AND grantee ILIKE :pattern")
+# params = { "schema": sch, "tablename": metadata_table_db.name, "pattern": f"{environment}%{project_prefix}_{sch}_%"}
+# for role, scope in autogen_context.connection.execute(query, params):
+#     current_rights.setdefault(role, []).append(scope)
 @comparators.dispatch_for("table")
 def compare_for_sensitive(
     autogen_context,
@@ -55,32 +65,46 @@ def compare_for_sensitive(
         "write": ["SELECT", "UPDATE", "DELETE", "TRUNCATE", "INSERT"],
         "all": ["ALL"],
     }
+    required_rights = set()
+    current_rights = set()
 
-    # опять неправильный подход от миши, который не учитывает изменяющиеся таблицы
-    if metadata_table_db is None:
+    # extract rights from database
+    if metadata_table_db is not None:
+        query = text(
+            "SELECT DISTINCT grantee FROM information_schema.role_table_grants "
+            "WHERE table_schema=:schema AND table_name=:tablename AND grantee ILIKE :pattern"
+        )
+        params = {
+            "schema": sch,
+            "tablename": metadata_table_db.name,
+            "pattern": f"{environment}%{project_prefix}_{sch}_%",
+        }
+        current_rights.update(
+            row.grantee for row in autogen_context.connection.execute(query, params)
+        )
+
+    # get required rights
+    if metadata_table_code is not None:
         sensitive = (
             "_sensitive" if metadata_table_code.info.get("sensitive", False) else ""
         )
-        for render_scope, scopes in render_scope_map.items():
-            group_name = f"{environment}{sensitive}_{project_prefix}_{sch}_{render_scope}".lower()
-            modify_table_ops.ops.append(
-                GrantRightsOp(
-                    table_name=str(metadata_table_code),
-                    scopes=scopes,
-                    group_name=group_name,
-                )
-            )
-
-    if metadata_table_code is None:
-        sensitive = (
-            "_sensitive" if metadata_table_db.info.get("sensitive", False) else ""
+        group_name = f"{environment}%s_{project_prefix}_{sch}_%s".lower()
+        required_rights.update(
+            group_name % (sensitive, render_scope)
+            for render_scope in render_scope_map.keys()
         )
-        for render_scope, scopes in render_scope_map.items():
-            group_name = f"{environment}{sensitive}_{project_prefix}_{sch}_{render_scope}".lower()
-            modify_table_ops.ops.append(
-                RevokeRightsOp(
-                    table_name=str(metadata_table_db),
-                    scopes=scopes,
-                    group_name=group_name,
-                )
+
+    for group in required_rights - current_rights:
+        scope = group[group.rfind("_") + 1 :]
+        modify_table_ops.ops.append(
+            GrantRightsOp(
+                table_name=tname, scopes=render_scope_map[scope], group_name=group
             )
+        )
+    for group in current_rights - required_rights:
+        scope = group[group.rfind("_") + 1 :]
+        modify_table_ops.ops.append(
+            RevokeRightsOp(
+                table_name=tname, scopes=render_scope_map[scope], group_name=group
+            )
+        )
