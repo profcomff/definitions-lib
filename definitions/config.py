@@ -35,7 +35,9 @@ def main(
         if os.path.isfile("alembic.ini"):
             options.config = "alembic.ini"
         else:
-            raise EnvironmentError("File alembic.ini does not exist and was not provided in command line. See --help.")
+            raise EnvironmentError(
+                "File alembic.ini does not exist and was not provided in command line. See --help."
+            )
 
     config = Config(
         file_=options.config,
