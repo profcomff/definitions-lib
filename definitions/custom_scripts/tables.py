@@ -26,7 +26,7 @@ def compare_for_encrypted(
     if encrypted_code and not encrypted_db:
         modify_table_ops.append(
             EncryptTableOp(
-                table_code.name,
+                f"{sch}.{table_code.name}",
                 code_info.encryption["keys"],
                 code_info.encryption["id"],
                 code_info.encryption["columns"],
@@ -35,7 +35,7 @@ def compare_for_encrypted(
     if encrypted_db and not encrypted_code:
         modify_table_ops.append(
             DecryptTableOp(
-                table_code.name,
+                f"{sch}.{table_code.name}",
                 code_info.encryption["keys"],
                 code_info.encryption["id"],
                 code_info.encryption["columns"],
@@ -98,13 +98,17 @@ def compare_for_sensitive(
         scope = group[group.rfind("_") + 1 :]
         modify_table_ops.ops.append(
             GrantRightsOp(
-                table_name=tname, scopes=render_scope_map[scope], group_name=group
+                table_name=f"{sch}.{tname}",
+                scopes=render_scope_map[scope],
+                group_name=group,
             )
         )
     for group in current_rights - required_rights:
         scope = group[group.rfind("_") + 1 :]
         modify_table_ops.ops.append(
             RevokeRightsOp(
-                table_name=tname, scopes=render_scope_map[scope], group_name=group
+                table_name=f"{sch}.{tname}",
+                scopes=render_scope_map[scope],
+                group_name=group,
             )
         )
