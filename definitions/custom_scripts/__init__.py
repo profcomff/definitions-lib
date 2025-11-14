@@ -6,7 +6,7 @@ from .render import (
     render_drop_group,
     render_drop_sequence,
 )
-from .schemas import add_table_schema_to_model, compare_for_groups, compare_schemas
+from .schemas import add_table_schema_to_model, compare_for_groups
 from .tables import compare_for_encrypted, compare_for_sensitive
 
 __all__ = [
@@ -15,7 +15,9 @@ __all__ = [
     "render_create_sequence",
     "render_drop_sequence",
     "add_table_schema_to_model",
-    "compare_schemas",
+    "compare_for_groups",
+    "compare_for_encrypted",
+    "compare_for_sensitive",
     "create_group",
     "delete_group",
     "render_create_group",
