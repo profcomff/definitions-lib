@@ -1,5 +1,4 @@
 from alembic.operations import MigrateOperation, Operations
-
 from alembic.operations.ops import CreateTableOp
 
 # TODO: replace CreateTableOp and DropTableOp implementations

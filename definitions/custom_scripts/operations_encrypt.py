@@ -1,6 +1,7 @@
+from enum import IntEnum
+
 from alembic.operations import MigrateOperation, Operations
 from sqlalchemy import text
-from enum import IntEnum
 
 
 def _get_column_names(schema, table, id_column):
