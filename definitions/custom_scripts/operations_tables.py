@@ -1,4 +1,10 @@
 from alembic.operations import MigrateOperation, Operations
+from alembic.operations.ops import CreateTableOp
+
+# TODO: replace CreateTableOp and DropTableOp implementations
+# with custom ones
+# Will be possible in alembic 1.17.2+
+# till then, we wait
 
 
 @Operations.register_operation("grant_on_table")

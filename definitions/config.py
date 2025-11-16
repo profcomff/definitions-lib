@@ -31,6 +31,14 @@ def main(
         # behavior changed incompatibly in py3.3
         command_line.parser.error("too few arguments")
     Config.get_template_directory = get_template_directory  # type: ignore
+    if options.config is None:
+        if os.path.isfile("alembic.ini"):
+            options.config = "alembic.ini"
+        else:
+            raise EnvironmentError(
+                "File alembic.ini does not exist and was not provided in command line. See --help."
+            )
+
     config = Config(
         file_=options.config,
         ini_section=options.name,
